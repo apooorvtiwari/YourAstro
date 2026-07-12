@@ -1,0 +1,27 @@
+{
+  "expo": {
+    "name": "AstroTalk MVP",
+    "slug": "astrotalk-mvp",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "backgroundColor": "#0f0a1e"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.iminationz.astrotalkmvp"
+    },
+    "android": {
+      "package": "com.iminationz.astrotalkmvp",
+      "adaptiveIcon": {
+        "backgroundColor": "#0f0a1e"
+      }
+    },
+    "web": {
+      "bundler": "metro"
+    },
+    "plugins": []
+  }
+}
