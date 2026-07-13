@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
 import { supabase } from '../../services/supabase';
 import { useAuth } from '../../contexts/AuthContext';
 import { useWallet } from '../../hooks/useWallet';
 import { colors } from '../../theme';
+import { showAlert } from '../../utils/showAlert';
 import type { AstrologerWithProfile, Review } from '../../types';
 
 export function AstrologerDetailScreen({ route, navigation }: any) {
@@ -37,12 +38,12 @@ export function AstrologerDetailScreen({ route, navigation }: any) {
     if (!astrologer || !session?.user) return;
 
     if (!astrologer.is_online) {
-      Alert.alert('Astrologer offline', 'This astrologer is not available right now.');
+      showAlert('Astrologer offline', 'This astrologer is not available right now.');
       return;
     }
 
     if (!wallet || wallet.balance < astrologer.per_minute_rate) {
-      Alert.alert(
+      showAlert(
         'Insufficient balance',
         `You need at least ₹${astrologer.per_minute_rate} to start this chat. Please recharge your wallet.`,
         [
@@ -67,7 +68,7 @@ export function AstrologerDetailScreen({ route, navigation }: any) {
     setStarting(false);
 
     if (error || !data) {
-      Alert.alert('Could not start chat', error?.message ?? 'Please try again.');
+      showAlert('Could not start chat', error?.message ?? 'Please try again.');
       return;
     }
 

@@ -8,12 +8,12 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
-  Alert,
-} from 'react-native';
+  } from 'react-native';
 import { useAuth } from '../../contexts/AuthContext';
 import { useChatSession } from '../../hooks/useChatSession';
 import { useWallet } from '../../hooks/useWallet';
 import { colors } from '../../theme';
+import { showAlert } from '../../utils/showAlert';
 
 export function ChatScreen({ route, navigation }: any) {
   const { sessionId } = route.params;
@@ -31,7 +31,7 @@ export function ChatScreen({ route, navigation }: any) {
         session.ended_reason === 'low_balance'
           ? 'Chat ended — wallet balance ran out.'
           : 'Chat session ended.';
-      Alert.alert('Session ended', reasonMessage, [{ text: 'OK', onPress: () => navigation.goBack() }]);
+      showAlert('Session ended', reasonMessage, [{ text: 'OK', onPress: () => navigation.goBack() }]);
     }
   }, [session?.status, session?.ended_reason]);
 
@@ -44,7 +44,7 @@ export function ChatScreen({ route, navigation }: any) {
   };
 
   const handleEnd = () => {
-    Alert.alert('End chat?', 'This will end the consultation for both participants.', [
+    showAlert('End chat?', 'This will end the consultation for both participants.', [
       { text: 'Cancel', style: 'cancel' },
       {
         text: 'End Chat',

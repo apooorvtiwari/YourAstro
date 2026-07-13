@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
-import { View, Text, Switch, FlatList, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, Switch, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { supabase } from '../../services/supabase';
 import { useAuth } from '../../contexts/AuthContext';
 import { colors } from '../../theme';
+import { showAlert } from '../../utils/showAlert';
 import type { AstrologerProfile, ChatSession, Profile } from '../../types';
 
 interface RequestWithCustomer extends ChatSession {
@@ -70,7 +71,7 @@ export function AstrologerDashboardScreen({ navigation }: any) {
     if (!session?.user || !astroProfile) return;
 
     if (!astroProfile.is_approved) {
-      Alert.alert('Approval pending', 'Your account is awaiting admin approval before you can go online.');
+      showAlert('Approval pending', 'Your account is awaiting admin approval before you can go online.');
       return;
     }
 

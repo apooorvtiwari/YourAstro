@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { supabase } from '../../services/supabase';
 import { colors } from '../../theme';
+import { showAlert } from '../../utils/showAlert';
 
 export function LoginScreen({ navigation }: any) {
   const [email, setEmail] = useState('');
@@ -10,14 +11,14 @@ export function LoginScreen({ navigation }: any) {
 
   const handleLogin = async () => {
     if (!email.trim() || !password) {
-      Alert.alert('Missing details', 'Enter both email and password.');
+      showAlert('Missing details', 'Enter both email and password.');
       return;
     }
     setLoading(true);
     const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
     setLoading(false);
     if (error) {
-      Alert.alert('Login failed', error.message);
+      showAlert('Login failed', error.message);
     }
     // Successful login is picked up by AuthContext's onAuthStateChange listener.
   };

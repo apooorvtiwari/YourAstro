@@ -1,9 +1,10 @@
 import { useCallback, useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, FlatList } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { supabase } from '../../services/supabase';
 import { useAuth } from '../../contexts/AuthContext';
 import { colors } from '../../theme';
+import { showAlert } from '../../utils/showAlert';
 import type { AstrologerProfile, ChatSession } from '../../types';
 
 export function AstrologerEarningsScreen() {
@@ -50,7 +51,7 @@ export function AstrologerEarningsScreen() {
     if (!session?.user) return;
     const rate = parseFloat(rateInput);
     if (!rate || rate <= 0) {
-      Alert.alert('Invalid rate', 'Enter a valid per-minute rate.');
+      showAlert('Invalid rate', 'Enter a valid per-minute rate.');
       return;
     }
 
@@ -62,9 +63,9 @@ export function AstrologerEarningsScreen() {
     setSaving(false);
 
     if (error) {
-      Alert.alert('Update failed', error.message);
+      showAlert('Update failed', error.message);
     } else {
-      Alert.alert('Saved', 'Your rate has been updated.');
+      showAlert('Saved', 'Your rate has been updated.');
       fetchData();
     }
   };

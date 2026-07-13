@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput, StyleSheet, FlatList, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
 import RazorpayCheckout from '../../services/razorpayCheckout';
 import { useWallet } from '../../hooks/useWallet';
 import { useAuth } from '../../contexts/AuthContext';
 import { supabase } from '../../services/supabase';
+import { showAlert } from '../../utils/showAlert';
 import { colors } from '../../theme';
 
 const QUICK_AMOUNTS = [100, 250, 500, 1000];
@@ -61,13 +62,13 @@ export function WalletScreen() {
         throw new Error(verifyError?.message ?? 'Payment verification failed');
       }
 
-      Alert.alert('Success', `₹${amount} added to your wallet.`);
+      showAlert('Success', `₹${amount} added to your wallet.`);
       await refresh();
     } catch (err: any) {
       // Razorpay throws with a `description` field on user cancellation.
       const message = err?.description || err?.message || 'Payment could not be completed.';
       if (message !== 'Payment cancelled by user' && !message.toLowerCase().includes('cancel')) {
-        Alert.alert('Payment failed', message);
+        showAlert('Payment failed', message);
       }
     } finally {
       setProcessing(false);
@@ -112,7 +113,7 @@ export function WalletScreen() {
             if (amt >= 50) {
               handleRecharge(amt);
             } else {
-              Alert.alert('Minimum amount', 'Please enter at least ₹50.');
+              showAlert('Minimum amount', 'Please enter at least ₹50.');
             }
           }}
           disabled={processing}

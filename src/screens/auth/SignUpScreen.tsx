@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { supabase } from '../../services/supabase';
 import { colors } from '../../theme';
 import type { UserRole } from '../../types';
+import { showAlert } from '../../utils/showAlert';
 
 export function SignUpScreen({ navigation }: any) {
   const [fullName, setFullName] = useState('');
@@ -13,7 +14,7 @@ export function SignUpScreen({ navigation }: any) {
 
   const handleSignUp = async () => {
     if (!fullName.trim() || !email.trim() || password.length < 6) {
-      Alert.alert('Missing details', 'Fill in name, email, and a password (min 6 characters).');
+      showAlert('Missing details', 'Fill in name, email, and a password (min 6 characters).');
       return;
     }
 
@@ -28,12 +29,12 @@ export function SignUpScreen({ navigation }: any) {
     setLoading(false);
 
     if (error) {
-      Alert.alert('Sign up failed', error.message);
+      showAlert('Sign up failed', error.message);
       return;
     }
 
     if (role === 'astrologer') {
-      Alert.alert(
+      showAlert(
         'Almost there',
         'Your astrologer account needs manual approval before you can go online. Please contact the admin.'
       );
