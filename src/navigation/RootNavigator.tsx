@@ -7,6 +7,7 @@ import { colors } from '../theme';
 
 import { LoginScreen } from '../screens/auth/LoginScreen';
 import { SignUpScreen } from '../screens/auth/SignUpScreen';
+import { DebugScreen } from '../screens/auth/DebugScreen';
 
 import { AstrologerListScreen } from '../screens/customer/AstrologerListScreen';
 import { AstrologerDetailScreen } from '../screens/customer/AstrologerDetailScreen';
@@ -46,6 +47,7 @@ function AuthNavigator() {
     <AuthStack.Navigator screenOptions={{ headerShown: false }}>
       <AuthStack.Screen name="Login" component={LoginScreen} />
       <AuthStack.Screen name="SignUp" component={SignUpScreen} />
+      <AuthStack.Screen name="Debug" component={DebugScreen} options={{ headerShown: true, title: 'Debug' }} />
     </AuthStack.Navigator>
   );
 }

@@ -61,6 +61,10 @@ export function LoginScreen({ navigation }: any) {
       <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
         <Text style={styles.link}>Don't have an account? Sign up</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => navigation.navigate('Debug')}>
+        <Text style={styles.debugLink}>Debug connection issue</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -88,4 +92,5 @@ const styles = StyleSheet.create({
   },
   buttonText: { color: colors.bgVoid, fontWeight: '700', fontSize: 15 },
   link: { color: colors.accentTeal, textAlign: 'center', marginTop: 20, fontSize: 13.5 },
+  debugLink: { color: colors.textTertiary, textAlign: 'center', marginTop: 14, fontSize: 11.5 },
 });
