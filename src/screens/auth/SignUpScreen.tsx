@@ -42,11 +42,10 @@ export function SignUpScreen({ navigation }: any) {
       }
     } catch (err: any) {
       // Network-level failures (CORS, DNS, offline, wrong Supabase URL) land
-      // here instead of the `error` object above — surface them explicitly.
-      showAlert(
-        'Connection error',
-        err?.message || 'Could not reach the server. Check your internet connection and try again.'
-      );
+      // here instead of the `error` object above — surface them explicitly,
+      // including a raw dump if there's no readable message at all.
+      const detail = err?.message || err?.error_description || err?.toString?.() || JSON.stringify(err);
+      showAlert('Connection error', detail || 'Could not reach the server. Check your internet connection and try again.');
     } finally {
       setLoading(false);
     }
