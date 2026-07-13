@@ -19,25 +19,36 @@ export function SignUpScreen({ navigation }: any) {
     }
 
     setLoading(true);
-    const { error } = await supabase.auth.signUp({
-      email: email.trim(),
-      password,
-      options: {
-        data: { full_name: fullName.trim(), role },
-      },
-    });
-    setLoading(false);
 
-    if (error) {
-      showAlert('Sign up failed', error.message);
-      return;
-    }
+    try {
+      const { error } = await supabase.auth.signUp({
+        email: email.trim(),
+        password,
+        options: {
+          data: { full_name: fullName.trim(), role },
+        },
+      });
 
-    if (role === 'astrologer') {
+      if (error) {
+        showAlert('Sign up failed', error.message || `Unexpected error (status ${error.status ?? 'unknown'})`);
+        return;
+      }
+
+      if (role === 'astrologer') {
+        showAlert(
+          'Almost there',
+          'Your astrologer account needs manual approval before you can go online. Please contact the admin.'
+        );
+      }
+    } catch (err: any) {
+      // Network-level failures (CORS, DNS, offline, wrong Supabase URL) land
+      // here instead of the `error` object above — surface them explicitly.
       showAlert(
-        'Almost there',
-        'Your astrologer account needs manual approval before you can go online. Please contact the admin.'
+        'Connection error',
+        err?.message || 'Could not reach the server. Check your internet connection and try again.'
       );
+    } finally {
+      setLoading(false);
     }
   };
 

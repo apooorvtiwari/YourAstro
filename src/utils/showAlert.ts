@@ -16,16 +16,23 @@ interface AlertButton {
 }
 
 export function showAlert(title: string, message?: string, buttons?: AlertButton[]): void {
+  const safeMessage =
+    typeof message === 'string' && message.trim()
+      ? message
+      : message
+        ? JSON.stringify(message)
+        : undefined;
+
   if (Platform.OS === 'web') {
     if (!buttons || buttons.length <= 1) {
-      window.alert(message ? `${title}\n\n${message}` : title);
+      window.alert(safeMessage ? `${title}\n\n${safeMessage}` : title);
       buttons?.[0]?.onPress?.();
       return;
     }
 
     // Multi-button case (e.g. Cancel / Confirm) — use confirm() for the
     // primary action, fire the non-cancel button's onPress if confirmed.
-    const confirmed = window.confirm(message ? `${title}\n\n${message}` : title);
+    const confirmed = window.confirm(safeMessage ? `${title}\n\n${safeMessage}` : title);
     const primaryButton = buttons.find((b) => b.style !== 'cancel');
     const cancelButton = buttons.find((b) => b.style === 'cancel');
 
@@ -37,5 +44,5 @@ export function showAlert(title: string, message?: string, buttons?: AlertButton
     return;
   }
 
-  Alert.alert(title, message, buttons);
+  Alert.alert(title, safeMessage, buttons);
 }

@@ -15,12 +15,20 @@ export function LoginScreen({ navigation }: any) {
       return;
     }
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
-    setLoading(false);
-    if (error) {
-      showAlert('Login failed', error.message);
+    try {
+      const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+      if (error) {
+        showAlert('Login failed', error.message || `Unexpected error (status ${error.status ?? 'unknown'})`);
+      }
+      // Successful login is picked up by AuthContext's onAuthStateChange listener.
+    } catch (err: any) {
+      showAlert(
+        'Connection error',
+        err?.message || 'Could not reach the server. Check your internet connection and try again.'
+      );
+    } finally {
+      setLoading(false);
     }
-    // Successful login is picked up by AuthContext's onAuthStateChange listener.
   };
 
   return (
