@@ -124,6 +124,24 @@ npx expo start
 - Wallet balance can only change via the `credit_wallet` and `deduct_for_chat_minute` SQL functions, both `security definer` and **not** granted to the `authenticated` role — so a compromised client can't fake a top-up or dodge a charge.
 - When you move Razorpay from test mode to live mode, generate live keys and repeat step 4-5 with the live credentials.
 
+## 9. (Optional) Deploy a web preview to Netlify
+
+The app can also run as a website via Expo's web export — useful for quick previews without
+needing Expo Go, though the mobile app (steps above) is the real product experience.
+
+1. Push this repo to GitHub
+2. In Netlify: **Add new site → Import an existing project** → pick this repo
+3. `netlify.toml` is already configured (`npm run build:web`, publish `dist`) — Netlify picks it up automatically
+4. In **Site settings → Environment variables**, add the same three variables as your local `.env`:
+   - `EXPO_PUBLIC_SUPABASE_URL`
+   - `EXPO_PUBLIC_SUPABASE_ANON_KEY`
+   - `EXPO_PUBLIC_RAZORPAY_KEY_ID`
+5. Deploy
+
+Note: the web build uses Razorpay's hosted Checkout.js script instead of the native SDK
+(`src/services/razorpayCheckout.web.ts` vs `.native.ts`) — this happens automatically, no config
+needed. Functionally identical from the user's perspective.
+
 ## What's deliberately NOT in this MVP
 
 - Voice/video calls

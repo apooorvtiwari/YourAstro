@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput, StyleSheet, FlatList, Alert, ActivityIndicator } from 'react-native';
-import RazorpayCheckout from 'react-native-razorpay';
+import RazorpayCheckout from '../../services/razorpayCheckout';
 import { useWallet } from '../../hooks/useWallet';
 import { useAuth } from '../../contexts/AuthContext';
 import { supabase } from '../../services/supabase';

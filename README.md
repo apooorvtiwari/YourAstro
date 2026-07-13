@@ -9,9 +9,9 @@ SQL migrations, configure Razorpay, and deploy the Edge Functions.**
 
 ## Stack
 
-- **App**: React Native + Expo (TypeScript)
+- **App**: React Native + Expo (TypeScript) — runs on iOS, Android, and web
 - **Backend**: Supabase (Postgres + Auth + Realtime + Edge Functions)
-- **Payments**: Razorpay (order creation + signature verification via Edge Functions)
+- **Payments**: Razorpay (native SDK on mobile, Checkout.js on web) — order creation + signature verification always happens via Edge Functions
 - **Navigation**: React Navigation (role-based: customer stack vs astrologer stack)
 
 ## What's included
@@ -59,3 +59,5 @@ npx expo start
 ```
 
 Scan the QR code with Expo Go, or run on a simulator.
+
+To preview in a browser instead: `npm run web`. To build the static web export (what Netlify deploys): `npm run build:web`, output goes to `dist/`.
