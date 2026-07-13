@@ -169,16 +169,28 @@ create trigger trg_wallets_updated_at before update on wallets
 -- ----------------------------------------------------------------------------
 create or replace function handle_new_user()
 returns trigger as $$
+declare
+  v_role user_role;
 begin
+  v_role := coalesce((new.raw_user_meta_data->>'role')::user_role, 'customer');
+
   insert into public.profiles (id, full_name, role)
   values (
     new.id,
     coalesce(new.raw_user_meta_data->>'full_name', 'New User'),
-    coalesce((new.raw_user_meta_data->>'role')::user_role, 'customer')
+    v_role
   );
 
   insert into public.wallets (user_id, balance)
   values (new.id, 0);
+
+  -- Astrologers additionally need an astrologer_profiles row so the
+  -- dashboard (online toggle, rate, requests) has something to read/write.
+  -- Starts unapproved — flip is_approved manually in Table Editor for MVP.
+  if v_role = 'astrologer' then
+    insert into public.astrologer_profiles (id)
+    values (new.id);
+  end if;
 
   return new;
 end;
