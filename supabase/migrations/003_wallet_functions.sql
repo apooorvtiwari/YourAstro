@@ -21,6 +21,7 @@ create or replace function credit_wallet(
 returns wallet_transactions
 language plpgsql
 security definer
+set search_path = public
 as $$
 declare
   v_wallet wallets%rowtype;
@@ -67,6 +68,7 @@ create or replace function deduct_for_chat_minute(
 returns numeric
 language plpgsql
 security definer
+set search_path = public
 as $$
 declare
   v_session chat_sessions%rowtype;
@@ -117,6 +119,7 @@ create or replace function end_chat_session(
 returns chat_sessions
 language plpgsql
 security definer
+set search_path = public
 as $$
 declare
   v_session chat_sessions%rowtype;

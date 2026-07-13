@@ -123,6 +123,7 @@ npx expo start
 - `.env` is gitignored — only `.env.example` (no real values) is committed.
 - Wallet balance can only change via the `credit_wallet` and `deduct_for_chat_minute` SQL functions, both `security definer` and **not** granted to the `authenticated` role — so a compromised client can't fake a top-up or dodge a charge.
 - When you move Razorpay from test mode to live mode, generate live keys and repeat step 4-5 with the live credentials.
+- All `security definer` functions in this schema explicitly set `search_path`. This isn't optional — Postgres does NOT give `security definer` functions the caller's search_path by default, so without it, references to custom types (like the `user_role` enum) or tables can fail with "does not exist" errors even though the objects clearly exist. If you add new `security definer` functions later, always include `set search_path = public` (or add other schemas as needed).
 
 ## 9. (Optional) Deploy a web preview to Netlify
 
